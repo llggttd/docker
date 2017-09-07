@@ -4,7 +4,7 @@ FROM nginx:latest
 
 MAINTAINER 0z0ne lgt_livezone@live.com
 
-LABEL description="Image for nginx logs"
+ 
 
 # 每条run指令在当前基础镜像执行，并且提交新镜像
 RUN ["rm", "/var/log/nginx/access.log"]
