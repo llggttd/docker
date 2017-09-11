@@ -1,17 +1,38 @@
+version: "3"
+service:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.local.com'
+    container_name: gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.local.com'
+    ports:
+      - '9999:80'
+      - '4430:443'
+      - '220:22'
+    volumes:
+      - 'gitlab-conf:/etc/gitlab'
+      - 'gitlab-logs:/var/log/gitlab'
+      - 'gitlab-data:/var/opt/gitlab'
 
-web:
-  image: 'gitlab/gitlab-ce:latest'
-  restart: always
-  hostname: 'gitlab.local.com'
-  container_name: gitlab
-  environment:
-    GITLAB_OMNIBUS_CONFIG: |
-      external_url 'https://gitlab.local.com'
-  ports:
-    - '8080:80'
-    - '4430:443'
-    - '220:22'
-  volumes:
-    - 'gitlab-conf:/etc/gitlab'
-    - 'gitlab-logs:/var/log/gitlab'
-    - 'gitlab-data:/var/opt/gitlab'
+  gitlab-runner:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    container_name: gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.local.com'
+    ports:
+      - '9999:80'
+      - '4430:443'
+      - '220:22'
+    volumes:
+      - 'gitlab-conf:/etc/gitlab'
+      - 'gitlab-logs:/var/log/gitlab'
+      - 'gitlab-data:/var/opt/gitlab'  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.local.com'
+    container_name: gitlab
