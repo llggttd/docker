@@ -7,11 +7,11 @@ services:
     hostname: 'gitlab.local.com'
     container_name: gitlab
     ports:
-      - '8888:80'
+      - '9999:80'
       - '4430:443'
       - '220:22'
     volumes:
-      - 'gitlab-config:/etc/gitlab'
+      - 'gitlab-conf:/etc/gitlab'
       - 'gitlab-logs:/var/log/gitlab'
       - 'gitlab-data:/var/opt/gitlab'
 
@@ -32,7 +32,7 @@ services:
       - gitlab
 
 volumes:
-  gitlab-config:
+  gitlab-conf:
     external: true
   gitlab-logs:
     external: true
