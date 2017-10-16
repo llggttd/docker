@@ -1,6 +1,6 @@
 version: "3"
 services:
-  pingcap_tipd_1:
+  tipd1:
     image: 'pingcap/pd:latest'
     container_name: tipd1
     command:
@@ -17,7 +17,7 @@ services:
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tipd_2:
+  tipd2:
     image: 'pingcap/pd:latest'
     container_name: tipd2
     command:
@@ -34,7 +34,7 @@ services:
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tipd_3:
+  tipd3:
     image: 'pingcap/pd:latest'
     container_name: tipd3
     command:
@@ -51,7 +51,7 @@ services:
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tikv_1:
+  tikv1:
     image: 'pingcap/tikv:latest'
     container_name: tikv1
     command:
@@ -59,12 +59,16 @@ services:
       - "--advertise-addr=192.168.1.78:20161"
       - "--data-dir=/data/tikv1"
       - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+    depends_on:
+      - tipd1
+      - tipd2
+      - tipd3
     ports:
       - '20161:20160'
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tikv_2:
+  tikv2:
     image: 'pingcap/tikv:latest'
     container_name: tikv2
     command:
@@ -72,12 +76,16 @@ services:
       - "--advertise-addr=192.168.1.78:20162"
       - "--data-dir=/data/tikv2"
       - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+    depends_on:
+      - tipd1
+      - tipd2
+      - tipd3
     ports:
       - '20162:20160'
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tikv_3:
+  tikv3:
     image: 'pingcap/tikv:latest'
     container_name: tikv3
     command:
@@ -85,17 +93,25 @@ services:
       - "--advertise-addr=192.168.1.78:20163"
       - "--data-dir=/data/tikv3"
       - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+    depends_on:
+      - tipd1
+      - tipd2
+      - tipd3
     ports:
       - '20163:20160'
     volumes:
       - 'pingcap-data:/data'
 
-  pingcap_tidb:
+  tidb:
     image: 'pingcap/tidb:latest'
     container_name: tidb
     command:
       - "--store=tikv"
       - "--path=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+    depends_on:
+      - tikv1
+      - tikv2
+      - tikv3
     ports:
       - '4000:4000'
       - '10080:10080'
