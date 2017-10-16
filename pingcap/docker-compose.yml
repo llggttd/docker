@@ -3,14 +3,15 @@ services:
   tipd1:
     image: 'pingcap/pd:latest'
     container_name: tipd1
+    restart: always
     command:
       - "--name=pd1"
       - "--data-dir=/data/pd1"
       - "--client-urls=http://0.0.0.0:2379"
-      - "--advertise-client-urls=http://192.168.1.78:2371"
+      - "--advertise-client-urls=http://$HOST:2371"
       - "--peer-urls=http://0.0.0.0:2380"
-      - "--advertise-peer-urls=http://192.168.1.78:2381"
-      - "--initial-cluster=pd1=http://192.168.1.78:2381,pd2=http://192.168.1.78:2382,pd3=http://192.168.1.78:2383"
+      - "--advertise-peer-urls=http://$HOST:2381"
+      - "--initial-cluster=pd1=http://$HOST:2381,pd2=http://$HOST:2382,pd3=http://$HOST:2383"
     ports:
       - '2371:2379'
       - '2381:2380'
@@ -20,14 +21,15 @@ services:
   tipd2:
     image: 'pingcap/pd:latest'
     container_name: tipd2
+    restart: always
     command:
       - "--name=pd2"
       - "--data-dir=/data/pd2"
       - "--client-urls=http://0.0.0.0:2379"
-      - "--advertise-client-urls=http://192.168.1.78:2372"
+      - "--advertise-client-urls=http://$HOST:2372"
       - "--peer-urls=http://0.0.0.0:2380"
-      - "--advertise-peer-urls=http://192.168.1.78:2382"
-      - "--initial-cluster=pd1=http://192.168.1.78:2381,pd2=http://192.168.1.78:2382,pd3=http://192.168.1.78:2383"
+      - "--advertise-peer-urls=http://$HOST:2382"
+      - "--initial-cluster=pd1=http://$HOST:2381,pd2=http://$HOST:2382,pd3=http://$HOST:2383"
     ports:
       - '2372:2379'
       - '2382:2380'
@@ -37,14 +39,15 @@ services:
   tipd3:
     image: 'pingcap/pd:latest'
     container_name: tipd3
+    restart: always
     command:
       - "--name=pd3"
       - "--data-dir=/data/pd3"
       - "--client-urls=http://0.0.0.0:2379"
-      - "--advertise-client-urls=http://192.168.1.78:2373"
+      - "--advertise-client-urls=http://$HOST:2373"
       - "--peer-urls=http://0.0.0.0:2380"
-      - "--advertise-peer-urls=http://192.168.1.78:2383"
-      - "--initial-cluster=pd1=http://192.168.1.78:2381,pd2=http://192.168.1.78:2382,pd3=http://192.168.1.78:2383"
+      - "--advertise-peer-urls=http://$HOST:2383"
+      - "--initial-cluster=pd1=http://$HOST:2381,pd2=http://$HOST:2382,pd3=http://$HOST:2383"
     ports:
       - '2373:2379'
       - '2383:2380'
@@ -54,11 +57,12 @@ services:
   tikv1:
     image: 'pingcap/tikv:latest'
     container_name: tikv1
+    restart: always
     command:
       - "--addr=0.0.0.0:20160"
-      - "--advertise-addr=192.168.1.78:20161"
+      - "--advertise-addr=$HOST:20161"
       - "--data-dir=/data/tikv1"
-      - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+      - "--pd=$HOST:2371,$HOST:2372,$HOST:2373"
     depends_on:
       - tipd1
       - tipd2
@@ -71,11 +75,12 @@ services:
   tikv2:
     image: 'pingcap/tikv:latest'
     container_name: tikv2
+    restart: always
     command:
       - "--addr=0.0.0.0:20160"
-      - "--advertise-addr=192.168.1.78:20162"
+      - "--advertise-addr=$HOST:20162"
       - "--data-dir=/data/tikv2"
-      - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+      - "--pd=$HOST:2371,$HOST:2372,$HOST:2373"
     depends_on:
       - tipd1
       - tipd2
@@ -88,11 +93,12 @@ services:
   tikv3:
     image: 'pingcap/tikv:latest'
     container_name: tikv3
+    restart: always
     command:
       - "--addr=0.0.0.0:20160"
-      - "--advertise-addr=192.168.1.78:20163"
+      - "--advertise-addr=$HOST:20163"
       - "--data-dir=/data/tikv3"
-      - "--pd=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+      - "--pd=$HOST:2371,$HOST:2372,$HOST:2373"
     depends_on:
       - tipd1
       - tipd2
@@ -105,9 +111,10 @@ services:
   tidb:
     image: 'pingcap/tidb:latest'
     container_name: tidb
+    restart: always
     command:
       - "--store=tikv"
-      - "--path=192.168.1.78:2371,192.168.1.78:2372,192.168.1.78:2373"
+      - "--path=$HOST:2371,$HOST:2372,$HOST:2373"
     depends_on:
       - tikv1
       - tikv2
