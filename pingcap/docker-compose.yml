@@ -125,3 +125,4 @@ services:
 
 volumes:
   pingcap-data:
+    external: true

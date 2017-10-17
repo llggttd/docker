@@ -33,6 +33,7 @@ docker run -d --name tidb -p 4000:4000 -p 10080:10080 pingcap/tidb:latest --stor
 #### docker compose 模式
 
 ```sh
+docker volume create --name=pingcap-data
 docker compose up -d
 ```
 服务对外IP配置在.env文件里，若要修改IP, 可以修改.env文件，或在执行前设置环境变量HOST=xxx.xxx.xxx.xxx来覆盖.env的设置。
