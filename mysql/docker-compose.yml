@@ -8,7 +8,9 @@ services:
       MYSQL_ROOT_PASSWORD: "lgt633744"
     ports:
       - 3306:3306
-
+    volumes:
+      - mysql-data:/var/lib/mysql
+      
 volumes:
   mysql-data:
     external: true

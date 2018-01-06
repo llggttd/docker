@@ -15,11 +15,17 @@ services:
       - 'gitlab-logs:/var/log/gitlab'
       - 'gitlab-data:/var/opt/gitlab'
 
+
   gitlab-runner-1:
     image: 'gitlab/gitlab-runner:latest'
     hostname: 'gitlab-runner-1.local.com'
     restart: always
     container_name: gitlab-runner-1
+    # 为了让runner能正常从gitlab中检出代码，需要从runner上能访问到gitlab的80端口
+    extra_hosts:
+      - "gitlab.local.com:$HOST"
+    depends_on:
+      - gitlab
     links:
       - gitlab
 
@@ -28,6 +34,11 @@ services:
     hostname: 'gitlab-runner-2.local.com'
     restart: always
     container_name: gitlab-runner-2
+    # 为了让runner能正常从gitlab中检出代码，需要从runner上能访问到gitlab的80端口
+    extra_hosts:
+      - "gitlab.local.com:$HOST"
+    depends_on:
+      - gitlab
     links:
       - gitlab
 
