@@ -8,7 +8,7 @@ services:
       - 6379:6379
 
   jumpserver:
-    image: jumpserver/jumpserver:v0.4.0-beta1
+    image: jumpserver/jumpserver:0.5.0-beta2
     container_name: jumpserver
     restart: always
     ports:
@@ -17,7 +17,7 @@ services:
       - redis
 
   coco:
-    image: jumpserver/coco:v0.4.0-beta1
+    image: jumpserver/coco:0.5.0-beta2
     container_name: coco
     restart: always
     ports:
@@ -26,7 +26,7 @@ services:
       - jumpserver
       
   luna:
-    image: jumpserver/luna:v0.4.0-beta1
+    image: jumpserver/luna:0.5.0-beta2
     container_name: luna
     restart: always
     ports:
